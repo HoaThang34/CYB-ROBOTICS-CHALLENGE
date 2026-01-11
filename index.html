@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYB Robotics Challenge - Sân Đấu & Luật Chơi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #0055ff;
+            --secondary: #a855f7;
+            --bg-light: #f4f7f9;
+            --panel-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #1a1a1a;
+            --text-dim: #666;
+            --border-color: rgba(0, 85, 255, 0.2);
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+        }
+
+        /* --- GIAO DIỆN UI (LIGHT MODE) --- */
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            bottom: 20px;
+            width: 360px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            pointer-events: none;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 4px 12px 12px 4px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: var(--secondary);
+            margin: 15px 0 10px 0;
+            text-transform: uppercase;
+        }
+
+        .info-item {
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .info-item b {
+            color: var(--primary);
+        }
+
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.03);
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .btn-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--panel-bg);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            z-index: 100;
+            transition: all 0.2s;
+        }
+
+        .btn-toggle:hover {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 85, 255, 0.3);
+        }
+
+        .footer-hint {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: auto;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+        }
+
+        @media (max-width: 500px) {
+            #ui-overlay {
+                width: calc(100% - 40px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="btn-toggle" onclick="toggleUI()">ẨN / HIỆN THÔNG TIN</button>
+
+    <div id="ui-overlay">
+        <div class="panel">
+            <h1>CYB ROBOTICS CHALLENGE</h1>
+            <div class="info-item">Website giới thiệu sân chơi và luật thi đấu chính thức. Thiết kế dựa trên mô phỏng
+                thực tế.</div>
+        </div>
+
+        <div class="panel" id="rulesPanel">
+            <h2>SÂN THI ĐẤU</h2>
+            <div class="info-item">
+                - Kích thước: <b>3m x 2m</b><br>
+                - Mặt sân: <b>Thảm xanh lá</b> (Green Turf).<br>
+                - Vạch xuất phát: <b>Màu xám</b> (Grey Zone).
+            </div>
+
+            <h2>QUY TẮC TÍNH ĐIỂM</h2>
+            <div class="score-grid">
+                <div class="score-badge">
+                    <span class="dot" style="background: #0055ff;"></span>
+                    Khu vực Xanh: 50 điểm
+                </div>
+                <div class="score-badge">
+                    <span class="dot" style="background: #a855f7;"></span>
+                    Khu vực Tím: 150 điểm
+                </div>
+            </div>
+
+            <h2>ROBOT QUY ĐỊNH</h2>
+            <div class="info-item">
+                - Loại: <b>VEX IQ Clawbot</b><br>
+                - Nhiệm vụ: Gắp vật phẩm về vạch xuất phát.
+            </div>
+        </div>
+
+        <div class="footer-hint">
+            🖱️ Chuột trái: Xoay | Chuột phải: Di chuyển | Cuộn: Thu phóng
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- 1. SETUP ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xf0f4f8);
+        scene.fog = new THREE.Fog(0xf0f4f8, 30, 100);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(-25, 25, 0); // Side view
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        // --- 2. LIGHTING (High visibility) ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+        mainLight.position.set(10, 40, 10);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 2048;
+        mainLight.shadow.mapSize.height = 2048;
+        scene.add(mainLight);
+
+        // --- 3. FIELD CONSTRUCTION (3m x 2m -> Scale 10 units = 1m) ---
+        // Main Green Floor
+        const floorGeo = new THREE.PlaneGeometry(30, 20);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x76c94e });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        // White border line
+        const borderGeo = new THREE.EdgesGeometry(floorGeo);
+        const borderMat = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const border = new THREE.LineSegments(borderGeo, borderMat);
+        border.rotation.x = -Math.PI / 2;
+        border.position.y = 0.01;
+        scene.add(border);
+
+        // ZONES (Based on Drawing)
+        function createZone(w, d, color, x, z) {
+            const geo = new THREE.PlaneGeometry(w, d);
+            const mat = new THREE.MeshStandardMaterial({ color: color, side: THREE.DoubleSide });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.rotation.x = -Math.PI / 2;
+            mesh.position.set(x, 0.02, z);
+            scene.add(mesh);
+            return mesh;
+        }
+
+        // Vạch xuất phát (Grey) - Center Left
+        createZone(6, 12, 0xcccccc, -12, 0);
+
+        // 50 điểm (Blue) - Top & Bottom near Start
+        createZone(5, 7, 0x0055ff, -4, -6.5);
+        createZone(5, 7, 0x0055ff, -4, 6.5);
+
+        // 150 điểm (Purple) - Top & Bottom Far Right
+        createZone(9, 8, 0xa855f7, 10, -6);
+        createZone(9, 8, 0xa855f7, 10, 6);
+
+        // --- 4. ITEMS ---
+        function createItem(type, x, z) {
+            let mesh;
+            if (type === 'cube') {
+                mesh = new THREE.Mesh(
+                    new THREE.BoxGeometry(1.2, 1.2, 1.2),
+                    new THREE.MeshStandardMaterial({ color: 0x00aaff })
+                );
+            } else {
+                mesh = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.7, 32, 32),
+                    new THREE.MeshStandardMaterial({ color: 0xcc00ff })
+                );
+            }
+            mesh.position.set(x, 0.6, z);
+            mesh.castShadow = true;
+            scene.add(mesh);
+        }
+
+        // Place items in zones
+        createItem('cube', -4, -6.5);
+        createItem('cube', -4, 6.5);
+        createItem('sphere', 10, -6);
+        createItem('sphere', 10, 6);
+
+        // --- 5. ROBOT (VEX IQ CLAWBOT) ---
+        const robot = new THREE.Group();
+        const chassis = new THREE.Mesh(new THREE.BoxGeometry(2, 0.6, 1.5), new THREE.MeshStandardMaterial({ color: 0x333333 }));
+        chassis.position.y = 0.6;
+        robot.add(chassis);
+
+        const brain = new THREE.Mesh(new THREE.BoxGeometry(1, 0.4, 0.8), new THREE.MeshStandardMaterial({ color: 0xff6600 }));
+        brain.position.set(0, 1.1, 0);
+        robot.add(brain);
+
+        const arm = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.5, 0.2), new THREE.MeshStandardMaterial({ color: 0x555555 }));
+        arm.position.set(0.8, 1.2, 0);
+        arm.rotation.z = -0.4;
+        robot.add(arm);
+
+        const claw = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.1, 0.8), new THREE.MeshStandardMaterial({ color: 0x222222 }));
+        claw.position.set(1.1, 1.8, 0);
+        robot.add(claw);
+
+        robot.position.set(-12, 0, 0);
+        scene.add(robot);
+
+        // --- 6. CONTROLS & ANIMATION ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.maxPolarAngle = Math.PI / 2.2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.toggleUI = function () {
+            const overlay = document.getElementById('ui-overlay');
+            overlay.style.display = overlay.style.display === 'none' ? 'flex' : 'none';
+        }
+    </script>
+</body>
+
+</html>
