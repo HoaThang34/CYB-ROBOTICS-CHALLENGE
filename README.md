@@ -21,8 +21,25 @@ Chào mừng bạn đến với dự án website chính thức của cuộc thi 
 - **Vật liệu mặt sân**: Thảm xanh lá cây tiêu chuẩn.
 - **Khu vực đặc biệt**:
     - **Vạch xuất phát (Grey Zone)**: Nơi robot bắt đầu và mang vật phẩm về.
-    - **Vùng 50 điểm (Blue Zone)**: Khu vực chứa vật phẩm giá trị trung bình.
-    - **Vùng 150 điểm (Purple Zone)**: Khu vực thử thách với điểm số cao.
+    - **Vùng 50 điểm (Blue Zone)**: Khu vực chứa vật phẩm khối lập phương.
+    - **Vùng 150 điểm (Purple Zone)**: Khu vực chứa bóng thi đấu.
+
+## 📜 Luật thi đấu chi tiết
+
+Để đảm bảo tính công bằng và chuyên nghiệp, các đội thi cần tuân thủ các quy tắc sau:
+
+1. **Thời gian**: Mỗi đội có tối đa **60 giây** để hoàn thành lượt thi của mình.
+2. **Robot**: 
+    - Sử dụng bộ kit **VEX IQ**.
+    - Cấu hình robot phải có cơ cấu gắp vật thể.
+    - Kích thước robot không vượt quá 30cm x 30cm tại thời điểm xuất phát.
+3. **Cách tính điểm**:
+    - **Khối lập phương Xanh**: 50 điểm / khối.
+    - **Bóng Tím**: 150 điểm / bóng.
+    - Vật phẩm chỉ được tính điểm khi được robot đưa về và nằm **hoàn toàn** bên trong ranh giới của Vạch Xuất Phát (Grey Zone).
+4. **Vận hành**:
+    - Robot xuất phát hoàn toàn bên trong Vạch Xuất Phát.
+    - Thành viên đội thi không được phép chạm vào robot hoặc vật phẩm trên sân sau khi trận đấu bắt đầu. Nếu vi phạm, lượt thi sẽ bị dừng ngay lập tức.
 
 ## 🤖 Robot quy định
 
